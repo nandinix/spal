@@ -39,16 +39,21 @@
 }
 
 p, table, .date {
-  font-family: "receipt", "Courier New", Courier, monospace;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 18px;
   /* font-size: 2.1rem;
   line-height: 2rem; */
+}
+
+.date {
+    font-weight: bold;
 }
 
 td {
   padding: 0 5px;
 }
 
-.tracks {
+.tracks, .artists {
   margin: 5px 0vh;
 }
 
@@ -70,7 +75,7 @@ table {
   text-align: center;
   text-decoration: none;
   padding: 1vh 3vh;
-  background-color: #0056ff;
+  background-color: #6d2d7e;
   font-size: 14px;
   cursor: pointer;
   border-radius: 10px;
@@ -92,4 +97,8 @@ table {
   border-radius: 10px;
   color: white;
   font-family: "Helvetica Neue", Helvetica, Geneva, Tahoma, sans-serif;
+}
+
+.info {
+    font-size: 20px;
 }

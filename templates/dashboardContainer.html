@@ -1,23 +1,20 @@
-{% macro dashboardContainer(display_name, songs, id, duration) -%}
+{% macro dashboardContainer(display_name, songs, artists, id, duration) -%}
 <div class="dashboardContainer" id="{{ id }}">
     <h2 class="logo">
-        RECEIPTIFY
+        {{ duration }}
     </h2>
     <p class="date">
-        ORDER #0001 FOR {{ display_name }}
+        TOP TRACKS FOR {{ display_name }}
     </p>
 
     <table class="tracks">
         <thead>
             <tr>
                 <td class="begin">
-                    QTY
+                    RANK
                 </td>
                 <td>
-                    ITEM
-                </td>
-                <td class="length">
-                    AMT
+                    TRACK
                 </td>
             </tr>
         </thead>
@@ -32,26 +29,39 @@
         </tr>
     {% endfor %}
         <tr class="total-counts">
-            <td class="begin" colspan="2">
-                ITEM COUNT:
-            </td>
-            <td class="length">
-                {{ songs | length }}
-            </td>
         </tr>
     </table>
-    <p class="date">
-        CARDHOLDER: {{ display_name }}
-    </p>
-    <div class="thanks">
-        <p>
-            THANK YOU FOR VISITING!
-        </p>
-        <p class="website">
-            receiptify.eriktoor.com
-    </p>
 
-</div>
+    <table class="artists">
+        <p class="date">
+            TOP ARTISTS FOR {{ display_name }}
+        </p>
+        <thead>
+            <tr>
+                <td class="begin">
+                    RANK
+                </td>
+                <td>
+                    ARTIST
+                </td>
+            </tr>
+        </thead>
+    {% for artist in artists %}
+        <tr>
+            <td class="begin">
+                {{ loop.index }}
+            </td>
+            <td class="name">
+                {{ artist.name }}
+            </td>
+        </tr>
+    {% endfor %}
+        <tr class="total-counts">
+        </tr>
+    </table>
+
+    <div class="thanks">
+    </div>
 </div>
 
 

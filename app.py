@@ -1,6 +1,9 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from flask import Flask, request, url_for, session, redirect, render_template
+import time
+from time import gmtime, strftime
+import os
 
 app = Flask(__name__)
 
@@ -18,7 +21,14 @@ def create_spotify_oauth():
 
 def get_token():
     token_info = session.get(TOKEN_INFO, None)
-    return token_info
+    if not token_info: 
+        raise "exception"
+    now = int(time.time())
+    is_expired = token_info['expires_at'] - now < 60 
+    if (is_expired): 
+        sp_oauth = create_spotify_oauth()
+        token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
+    return token_info 
 
 @app.route("/")
 def hello_world():
@@ -41,9 +51,13 @@ def redirectPage():
 
 @app.route("/dashboard")
 def dashboard():
-    user_token = get_token()
+    try: 
+        token_info = get_token()
+    except: 
+        print("user not logged in")
+        return redirect("/")
     sp = spotipy.Spotify(
-        auth = user_token['access_token']
+        auth=token_info['access_token'],
     )
 
     short_term_tracks = sp.current_user_top_tracks(
@@ -79,7 +93,25 @@ def dashboard():
     )
 
     current_user_name = sp.current_user()['display_name']
-    return render_template('dashboard.html', user_display_name = current_user_name, short_term=short_term_artists, medium_term=medium_term_artists, long_term=long_term_artists, title = "Dashboard")
+
+    if os.path.exists(".cache"): 
+        os.remove(".cache")
+    return render_template('dashboard.html', user_display_name = current_user_name, short_term_tracks=short_term_tracks, medium_term_tracks=medium_term_tracks, long_term_tracks=long_term_tracks, short_term_artists=short_term_artists, medium_term_artists=medium_term_artists, long_term_artists=long_term_artists, title = "Dashboard")
+
+
+@app.template_filter('strftime')
+def _jinja2_filter_datetime(date, fmt=None):
+    return strftime("%a, %d %b %Y", date)
+
+@app.template_filter('mmss')
+def _jinja2_filter_miliseconds(time, fmt=None):
+    time = int(time / 1000)
+    minutes = time // 60 
+    seconds = time % 60 
+    if seconds < 10: 
+        return str(minutes) + ":0" + str(seconds)
+    return str(minutes) + ":" + str(seconds ) 
+
 
 if __name__ == '__main__':
     app.run(debug=True)

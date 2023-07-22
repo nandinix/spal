@@ -24,30 +24,6 @@
                 activedashboard = id
             }
     
-            function hiddenClone(element) {
-                // Create clone of element
-                var clone = element.cloneNode(true);
-    
-                // Position element relatively within the
-                // body but still out of the viewport
-                var style = clone.style;
-                style.position = "relative";
-                style.top = window.innerHeight + "px";
-                style.left = 0;
-                // Append clone to body and return the clone
-                document.body.appendChild(clone);
-                return clone;
-            }
-    
-            $(document).ready(function () {
-    
-                // Global variable
-                var element = $(".dashboardContainerWrapper");
-    
-                // Global variable
-                var getCanvas;
-    
-            });
     
         </script>
     
@@ -66,18 +42,18 @@
         <div style="width: 100%; height: auto" class="buttons">
             <center>
                 <div>
-                    <button onclick="showContent('short_term_dashboard')" class="generatePicButton">Short Term Receipt</button>
-                    <button onclick="showContent('medium_term_dashboard')" class="generatePicButton">Medium Term Receipt</button>
-                    <button onclick="showContent('long_term_dashboard')" class="generatePicButton">Long Term Receipt</button>
+                    <button onclick="showContent('short_term_dashboard')" class="generatePicButton">Last 1 month</button>
+                    <button onclick="showContent('medium_term_dashboard')" class="generatePicButton">Last 6 Months</button>
+                    <button onclick="showContent('long_term_dashboard')" class="generatePicButton">All Time</button>
                 </div>
             </center>
         </div>
     
         <div style="width: 100%; height: auto" class="dashboardContainerWrapper">
             <center>
-                {{ dashboardContainer(user_display_name, short_term['items'], 'short_term_dashboard', 'LAST MONTH') }}
-                {{ dashboardContainer(user_display_name, medium_term['items'], 'medium_term_dashboard', 'LAST 6 MONTHS') }}
-                {{ dashboardContainer(user_display_name, long_term['items'], 'long_term_dashboard', 'ALL TIME') }}
+                {{ dashboardContainer(user_display_name, short_term_tracks['items'], short_term_artists['items'], 'short_term_dashboard', 'LAST MONTH') }}
+                {{ dashboardContainer(user_display_name, medium_term_tracks['items'], medium_term_artists['items'], 'medium_term_dashboard', 'LAST 6 MONTHS') }}
+                {{ dashboardContainer(user_display_name, long_term_tracks['items'],  long_term_artists['items'],'long_term_dashboard', 'ALL TIME') }}
             </center>
         </div>
     
