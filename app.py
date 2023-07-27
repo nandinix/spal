@@ -13,8 +13,8 @@ TOKEN_INFO = 'token_info'
 
 def create_spotify_oauth():
     return SpotifyOAuth(
-        client_id = "ec719f6d9bd5467380200909ac20f409",
-        client_secret= "ac50d2af91e44d6c920d954849e25c71",
+        client_id = "client-id",
+        client_secret= "client-secret",
         redirect_uri = url_for("redirectPage",_external=True),
         scope="user-top-read user-library-read"
     )
